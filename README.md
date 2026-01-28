@@ -43,6 +43,8 @@ A dedicated display application to support a family member with dementia. The ap
 
 ## Deployment
 
+**Live URL (GitHub Pages):** https://bloorize.github.io/deanna/
+
 The easiest way to deploy this app is with Vercel.
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FBloorize%2Fdeanna&env=VITE_SUPABASE_URL,VITE_SUPABASE_ANON_KEY,VITE_CLERK_PUBLISHABLE_KEY)

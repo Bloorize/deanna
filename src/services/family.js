@@ -34,6 +34,20 @@ export const familyService = {
         }
     },
 
+    getMembers: async () => {
+        if (!supabase) return []
+        const { data, error } = await supabase
+            .from('family_members')
+            .select('*')
+            .order('name')
+
+        if (error) {
+            console.error('Error fetching family:', error)
+            return []
+        }
+        return data
+    },
+
     updateStatus: async (name, status) => {
         if (!supabase) return
         const { error } = await supabase
