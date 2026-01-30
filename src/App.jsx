@@ -1,6 +1,7 @@
 import { HashRouter as Router, Routes, Route } from 'react-router-dom'
 import DisplayView from './DisplayView'
 import AdminView from './AdminView'
+import MessagesView from './MessagesView'
 import './index.css'
 
 function App() {
@@ -9,6 +10,7 @@ function App() {
       <Routes>
         <Route path="/" element={<DisplayView />} />
         <Route path="/admin" element={<AdminView />} />
+        <Route path="/messages" element={<MessagesView />} />
       </Routes>
     </Router>
   )

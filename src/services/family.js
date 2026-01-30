@@ -10,7 +10,7 @@ export const familyService = {
             .select('*')
             .order('name')
             .then(({ data }) => {
-                if (data) onUpdate(data)
+                if (data) onUpdate(data.filter(m => m.name !== 'Carl'))
             })
 
         // Real-time subscription
@@ -24,7 +24,7 @@ export const familyService = {
                     .select('*')
                     .order('name')
                     .then(({ data }) => {
-                        if (data) onUpdate(data)
+                        if (data) onUpdate(data.filter(m => m.name !== 'Carl'))
                     })
             })
             .subscribe()
@@ -45,7 +45,7 @@ export const familyService = {
             console.error('Error fetching family:', error)
             return []
         }
-        return data
+        return data.filter(m => m.name !== 'Carl')
     },
 
     updateStatus: async (name, status) => {
@@ -53,6 +53,16 @@ export const familyService = {
         const { error } = await supabase
             .from('family_members')
             .update({ status, updated_at: new Date() })
+            .eq('name', name)
+
+        if (error) throw error
+    },
+
+    updateMessage: async (name, message) => {
+        if (!supabase) return
+        const { error } = await supabase
+            .from('family_members')
+            .update({ message, updated_at: new Date() })
             .eq('name', name)
 
         if (error) throw error

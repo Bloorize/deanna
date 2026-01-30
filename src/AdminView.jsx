@@ -10,6 +10,7 @@ export default function AdminView() {
     const [input, setInput] = useState('')
     const [status, setStatus] = useState('')
     const [family, setFamily] = useState([])
+    const [messageEdits, setMessageEdits] = useState({}) // { name: text }
 
     // Journal State
     const [journalInput, setJournalInput] = useState('')
@@ -53,6 +54,24 @@ export default function AdminView() {
         } catch (err) {
             console.error(err)
             setStatus('Error updating')
+        }
+    }
+
+    const handleMessageUpdate = async (name) => {
+        try {
+            const msg = messageEdits[name]
+            if (msg === undefined) return // No changes
+
+            await familyService.updateMessage(name, msg)
+
+            // Clear edit state to show saved version
+            const newEdits = { ...messageEdits }
+            delete newEdits[name]
+            setMessageEdits(newEdits)
+
+        } catch (err) {
+            console.error(err)
+            alert('Error updating message. (Did you run the SQL migration?)')
         }
     }
 
@@ -118,7 +137,7 @@ export default function AdminView() {
         "The nurse is coming at 2 PM."
     ]
 
-    const emojis = ['🙂', '😡', '😴']
+    const emojis = ['🙂', '😡', '😴', '⛔']
 
     const modules = {
         toolbar: [
@@ -211,7 +230,10 @@ export default function AdminView() {
                 <div className="container admin-view">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-md)' }}>
                         <h1 style={{ fontSize: 'var(--font-size-heading)', marginBottom: 0 }}>Admin Control</h1>
-                        <UserButton showName />
+                        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                            <a href="#/messages" style={{ color: 'var(--color-accent)', fontWeight: 'bold', textDecoration: 'none' }}>Family Board ↗</a>
+                            <UserButton showName />
+                        </div>
                     </div>
 
                     {/* Main Message Control */}
@@ -250,19 +272,53 @@ export default function AdminView() {
                     <div className="admin-family-section">
                         <h3 style={{ marginBottom: 'var(--space-md)' }}>Family Status</h3>
                         {family.map(member => (
-                            <div key={member.name} className="admin-family-row">
-                                <span style={{ fontWeight: 500 }}>{member.name}</span>
-                                <div>
-                                    {emojis.map(emoji => (
+                            <div key={member.name} className="admin-family-row" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                                    <span style={{ fontWeight: 500, fontSize: '1.2rem' }}>{member.name}</span>
+                                    <div>
+                                        {emojis.map(emoji => (
+                                            <button
+                                                key={emoji}
+                                                type="button"
+                                                className={`emoji-btn ${member.status === emoji ? 'active' : ''}`}
+                                                onClick={() => handleEmojiUpdate(member.name, emoji)}
+                                            >
+                                                {emoji}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div style={{ marginTop: '0.5rem', display: 'flex', gap: '8px' }}>
+                                    <input
+                                        type="text"
+                                        placeholder={`Message for ${member.name}...`}
+                                        value={messageEdits[member.name] !== undefined ? messageEdits[member.name] : (member.message || '')}
+                                        onChange={(e) => setMessageEdits({ ...messageEdits, [member.name]: e.target.value })}
+                                        style={{
+                                            flex: 1,
+                                            padding: '8px',
+                                            borderRadius: 'var(--radius-sm)',
+                                            border: '1px solid var(--color-border)',
+                                            fontSize: '0.9rem'
+                                        }}
+                                    />
+                                    {messageEdits[member.name] !== undefined && messageEdits[member.name] !== member.message && (
                                         <button
-                                            key={emoji}
                                             type="button"
-                                            className={`emoji-btn ${member.status === emoji ? 'active' : ''}`}
-                                            onClick={() => handleEmojiUpdate(member.name, emoji)}
+                                            onClick={() => handleMessageUpdate(member.name)}
+                                            style={{
+                                                background: 'var(--color-accent)',
+                                                color: 'white',
+                                                border: 'none',
+                                                padding: '0 12px',
+                                                borderRadius: 'var(--radius-sm)',
+                                                fontWeight: 'bold',
+                                                cursor: 'pointer'
+                                            }}
                                         >
-                                            {emoji}
+                                            Save
                                         </button>
-                                    ))}
+                                    )}
                                 </div>
                             </div>
                         ))}

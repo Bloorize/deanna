@@ -235,3 +235,132 @@ button {
   margin-bottom: var(--space-xl);
   text-align: center;
 }
+/* Messages View */
+.messages-view-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-bg);
+}
+
+.messages-header {
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.quadrant-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 2px;
+  background-color: var(--color-border);
+  padding: 2px;
+  height: calc(100vh - 80px);
+}
+
+.quadrant-card {
+  background: white;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow: hidden;
+}
+
+.quadrant-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.quadrant-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--color-text-primary);
+}
+
+.emoji-selector {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.quadrant-message-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.message-display {
+  cursor: pointer;
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  transition: background 0.2s;
+  text-align: center;
+  width: 100%;
+}
+
+.message-display:hover {
+  background-color: #f8fafc;
+  border: 1px dashed var(--color-border);
+}
+
+.current-status-large {
+  font-size: 4rem;
+  margin-bottom: 0.5rem;
+  line-height: 1;
+}
+
+.message-text {
+  font-size: 1.5rem;
+  color: var(--color-text-primary);
+  white-space: pre-wrap;
+  line-height: 1.4;
+}
+
+.placeholder {
+  color: var(--color-text-secondary);
+  font-style: italic;
+  opacity: 0.7;
+}
+
+.message-editor {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.message-editor textarea {
+  width: 100%;
+  flex: 1;
+  padding: 1rem;
+  border: 2px solid var(--color-accent);
+  border-radius: var(--radius-sm);
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  resize: none;
+  font-family: inherit;
+}
+
+.editor-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.save-btn {
+  background-color: var(--color-accent);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: bold;
+}
